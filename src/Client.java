@@ -4,7 +4,7 @@
  */
 import java.io.*;
 import java.net.*;
-import java.util.Scanner();
+import java.util.Scanner;
 /**
  *
  * @author 1117078
