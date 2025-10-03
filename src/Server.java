@@ -4,6 +4,7 @@
  */
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 /**
  *
  * @author 1117078
@@ -18,10 +19,20 @@ public class Server {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-            String message = in.readLine();
-            System.out.println("Client: " + message);
-            out.println("Hello from server!");
+            
+            Scanner scan = new Scanner(System.in);
+            // in reads from the socket, out writes to the socket
+            // we wait for an input (sent by the client)
+            while (true) {
+                String message = in.readLine();
+                System.out.println("Client: " + message);
+                
+                String sendMessage = scan.nextLine();
+                if (sendMessage == "!exit") {
+                    break;
+                }
+                out.println(sendMessage);
+            }
 
             in.close();
             out.close();
