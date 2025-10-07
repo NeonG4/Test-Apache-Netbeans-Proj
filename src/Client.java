@@ -17,7 +17,7 @@ public class Client {
     static Socket socket;
     public static void main(String[] args) {
         try {
-            System.out.println("David's Super Cool Chatting System!");
+            System.out.println("\u001B[33mDavid's Super Cool Chatting System!\u001B[35m");
             
             // network inits
             socket = new Socket("10.172.205.120", 28443); // random port, matches with server
@@ -40,7 +40,7 @@ public class Client {
             metaData = sendMetaData(scan.nextLine());
             // sends a message, then waits for a message from client
             while (true) {
-                System.out.print(">");
+                System.out.print("\u001B[34m>\u001B[0m");
                 String sendMessage = scan.nextLine();
                 if ("!exit".equals(sendMessage)) {
                     in.close();
@@ -50,7 +50,7 @@ public class Client {
                 }
                 out.println(sendMessage);
                 String response = in.readLine();
-                System.out.println("Server: " + response);
+                System.out.println("\u001B[32mServer\u001B[0m: " + response);
             }
         }
         catch (IOException e) {
