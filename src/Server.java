@@ -10,37 +10,68 @@ import java.util.Scanner;
  * @author 1117078
  */
 public class Server {
+    static String clientName;
+    static double version = 1.0;
+    static double clientVersion;
+    static ServerSocket serverSocket;
+    static Socket clientSocket;
+    static BufferedReader in;
+    static PrintWriter out;
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(12345);
+            System.out.println("David's Super Cool Chatting System!");
+            
+            // network inits
+            serverSocket = new ServerSocket(28443); // random port, matches with client
             System.out.println("Server started. Waiting for a client...");
-            Socket clientSocket = serverSocket.accept();
+            clientSocket = serverSocket.accept();
             System.out.println("Client connected.");
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
             
             Scanner scan = new Scanner(System.in);
+            
+            // get init data (client version, client name)
+            String metaData = in.readLine();
+            try {
+                clientVersion = Double.parseDouble(metaData);
+                if (clientVersion != version) {
+                    throw new Exception("Invalid Client Version");
+                }
+                out.println("Matching Versions");
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+                if (e.getMessage().equals("Invalid Client Version")) {
+                    out.println("Error: Mismatch in server and client version.");
+                    return;
+                }
+            }
+            
+            clientName = in.readLine();
+            out.println("Got Name");
             // in reads from the socket, out writes to the socket
             // we wait for an input (sent by the client)
             while (true) {
                 String message = in.readLine();
-                System.out.println("Client: " + message);
+                System.out.println(clientName + ": " + message);
                 
+                System.out.print(">");
                 String sendMessage = scan.nextLine();
-                if (sendMessage == "!exit") {
-                    break;
+                if ("!exit".equals(sendMessage)) {
+                    in.close();
+                    out.close();
+                    clientSocket.close();
+                    serverSocket.close();
+                    return;
                 }
+                
                 out.println(sendMessage);
             }
-
-            in.close();
-            out.close();
-            clientSocket.close();
-            serverSocket.close();
         } 
         catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
 }
