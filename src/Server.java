@@ -54,8 +54,9 @@ public class Server {
             // we wait for an input (sent by the client)
             while (true) {
                 String message = in.readLine();
-                System.out.println("\u001B[32m" + clientName + "\u001B[0m: " + message);
-                
+                if (!message.equals("null")) {
+                    System.out.println("\u001B[32m" + clientName + "\u001B[0m: " + message);
+                }
                 System.out.print("\u001B[34m>\u001B[0m");
                 String sendMessage = scan.nextLine();
                 if ("!exit".equals(sendMessage)) {

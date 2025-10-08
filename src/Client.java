@@ -50,7 +50,9 @@ public class Client {
                 }
                 out.println(sendMessage);
                 String response = in.readLine();
-                System.out.println("\u001B[32mServer\u001B[0m: " + response);
+                if (!response.equals("null")) {
+                    System.out.println("\u001B[32mServer\u001B[0m: " + response);
+                }
             }
         }
         catch (IOException e) {
